@@ -20,7 +20,7 @@
       "boot_wait": "2m",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
-      "ssh_wait_timeout": "3h",
+      "ssh_wait_timeout": "4h",
       "shutdown_command": "{{user `shutdown_command`}}",
       "guest_os_type": "windows8srv-64",
       "tools_upload_flavor": "windows",
@@ -54,7 +54,7 @@
       "boot_wait": "2m",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
-      "ssh_wait_timeout": "3h",
+      "ssh_wait_timeout": "4h",
       "shutdown_command": "{{user `shutdown_command`}}",
       "guest_os_type": "Windows2012_64",
       "disk_size": 61440,
@@ -102,7 +102,6 @@
       "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
       "scripts": [
         "./scripts/chocolatey.bat",
-        "./scripts/chocopacks.bat",
         "./scripts/salt.bat"
       ]
     }
