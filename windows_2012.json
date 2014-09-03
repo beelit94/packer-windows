@@ -95,6 +95,7 @@
       ]
     },
     {
+      "type": "shell",
       "remote_path": "/tmp/script.bat",
       "start_retry_timeout": "10m",
       "pause_before": "2m",
