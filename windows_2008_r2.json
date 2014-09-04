@@ -97,7 +97,7 @@
       "type": "shell",
       "remote_path": "/tmp/script.bat",
       "start_retry_timeout": "10m",
-      "pause_before": "2m",
+      "pause_before": "5m",
       "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
       "scripts": [
         "./scripts/chocolatey.bat",
