@@ -1,0 +1,1 @@
+del C:\Windows\Temp\* /F /S /Q
