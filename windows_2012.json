@@ -22,6 +22,7 @@
       "ssh_password": "vagrant",
       "ssh_wait_timeout": "4h",
       "shutdown_command": "{{user `shutdown_command`}}",
+      "shutdown_timeout": "10m",
       "guest_os_type": "windows8srv-64",
       "tools_upload_flavor": "windows",
       "disk_size": 61440,
@@ -56,6 +57,7 @@
       "ssh_password": "vagrant",
       "ssh_wait_timeout": "4h",
       "shutdown_command": "{{user `shutdown_command`}}",
+      "shutdown_timeout": "10m",
       "guest_os_type": "Windows2012_64",
       "disk_size": 61440,
       "floppy_files": [
