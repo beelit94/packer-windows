@@ -81,6 +81,16 @@
           "2"
         ]
       ]
+    },
+    {
+      "type": "amazon-ebs",
+      "access_key": "YOUR KEY HERE",
+      "secret_key": "YOUR SECRET KEY HERE",
+      "region": "us-east-1",
+      "source_ami": "ami-de0d9eb7",
+      "instance_type": "t1.micro",
+      "ssh_username": "ubuntu",
+      "ami_name": "packer-quick-start {{timestamp}}"
     }
   ],
   "provisioners": [
@@ -91,8 +101,7 @@
       "scripts": [
         "./scripts/vm-guest-tools.bat",
         "./scripts/vagrant-ssh.bat",
-        "./scripts/enable-rdp.bat",
-        "./scripts/powershell.bat"
+        "./scripts/enable-rdp.bat"
       ]
     },
     {
