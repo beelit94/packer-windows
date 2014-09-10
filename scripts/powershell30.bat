@@ -17,7 +17,3 @@ GOTO :DONE
 :DONE
 timeout /t 60
 shutdown /r /t 0
-
-
-
-
