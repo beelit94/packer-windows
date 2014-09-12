@@ -123,7 +123,7 @@
       ],
       "boot_wait": "10s",
       "disk_size": 40960,
-      "headless": false,
+      "headless": true,
       "guest_os_type": "ubuntu-64",
       "tools_upload_flavor": "linux",
       "http_directory": "http",
