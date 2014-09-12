@@ -80,7 +80,7 @@
       "boot_wait": "10s",
       "disk_size": 40960,
       "headless": true,
-      "guest_os_type": "Ubuntu_64",
+      "guest_os_type": "linux",
       "http_directory": "http",
       "iso_checksum": "01545fa976c8367b4f0d59169ac4866c",
       "iso_checksum_type": "md5",
@@ -124,7 +124,7 @@
       "boot_wait": "10s",
       "disk_size": 40960,
       "headless": true,
-      "guest_os_type": "ubuntu-64",
+      "guest_os_type": "linux",
       "tools_upload_flavor": "linux",
       "http_directory": "http",
       "iso_checksum": "01545fa976c8367b4f0d59169ac4866c",
@@ -141,9 +141,6 @@
         "ethernet0.present": "true",
         "ethernet0.networkName": "VM Network",
         "ethernet0.virtualDev": "vmxnet3"
-      },
-      "vmx_data":{
-        "ethernet0.connectionType": "bridged"
       }
     }
   ]
