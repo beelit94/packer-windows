@@ -141,6 +141,9 @@
         "ethernet0.present": "true",
         "ethernet0.networkName": "VM Network",
         "ethernet0.virtualDev": "vmxnet3"
+      },
+      "vmx_data":{
+        "ethernet0.connectionType": "bridged"
       }
     }
   ]
