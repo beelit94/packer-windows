@@ -1,0 +1,147 @@
+{
+  "variables": {
+    "iso_folder": "{{env `ISO_FOLDER`}}",
+    "vsphere_host": "{{env `VSPHERE_HOST`}}",
+    "vsphere_username": "{{env `VSPHERE_USERNAME`}}",
+    "vsphere_password": "{{env `VSPHERE_PASSWORD`}}",
+    "vsphere_cluster": "{{env `VSPHERE_CLUSTER`}}",
+    "vsphere_datacenter": "{{env `VSPHERE_DATACENTER`}}",
+    "vsphere_resource_pool": "{{env `VSPHERE_RESOURCE_POOL`}}",
+    "vsphere_datastore": "{{env `VSPHERE_DATASTORE`}}"
+  },
+  "post-processors": [
+    {
+      "type": "vsphere",
+      "cluster": "ESX4",
+      "datacenter": "QA_Sustaining",
+      "host": "{{user `vsphere_host`}}",
+      "username": "{{user `vsphere_username`}}",
+      "password": "{{user `vsphere_password`}}",
+      "resource_pool": "template",
+      "vm_name": "ftan-testing-ubuntu",
+      "datastore": "QA-esx-datastore",
+      "insecure": true,
+      "keep_input_artifact": true
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'",    
+      "override": {
+        "virtualbox-iso": {
+          "scripts": [
+            "linux-script/base.sh",
+            "linux-script/vagrant.sh",
+            "linux-script/virtualbox.sh",
+            "linux-script/cleanup.sh",
+            "linux-script/zerodisk.sh"
+          ]
+        },
+        "vmware-iso": {
+          "scripts": [
+            "linux-script/base.sh",
+            "linux-script/vagrant.sh",
+            "linux-script/vmware.sh",
+            "linux-script/cleanup.sh",
+            "linux-script/zerodisk.sh"
+          ]
+        }
+      }
+    }
+  ],
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "boot_command": [
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/install/vmlinuz<wait>",
+        " auto<wait>",
+        " console-setup/ask_detect=false<wait>",
+        " console-setup/layoutcode=us<wait>",
+        " console-setup/modelcode=pc105<wait>",
+        " debconf/frontend=noninteractive<wait>",
+        " debian-installer=en_US<wait>",
+        " fb=false<wait>",
+        " initrd=/install/initrd.gz<wait>",
+        " kbd-chooser/method=us<wait>",
+        " keyboard-configuration/layout=USA<wait>",
+        " keyboard-configuration/variant=USA<wait>",
+        " locale=en_US<wait>",
+        " netcfg/get_hostname=ubuntu-1404<wait>",
+        " netcfg/get_domain=vagrantup.com<wait>",
+        " noapic<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+        " -- <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "disk_size": 40960,
+      "headless": true,
+      "guest_os_type": "Ubuntu_64",
+      "http_directory": "http",
+      "iso_checksum": "01545fa976c8367b4f0d59169ac4866c",
+      "iso_checksum_type": "md5",
+      "iso_url": "{{user `iso_folder`}}/ubuntu-14.04-server-amd64.iso",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "echo 'shutdown -P now' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'",
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "512" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "1" ]
+      ]
+    },
+    {
+      "type": "vmware-iso",
+      "boot_command": [
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/install/vmlinuz<wait>",
+        " auto<wait>",
+        " console-setup/ask_detect=false<wait>",
+        " console-setup/layoutcode=us<wait>",
+        " console-setup/modelcode=pc105<wait>",
+        " debconf/frontend=noninteractive<wait>",
+        " debian-installer=en_US<wait>",
+        " fb=false<wait>",
+        " initrd=/install/initrd.gz<wait>",
+        " kbd-chooser/method=us<wait>",
+        " keyboard-configuration/layout=USA<wait>",
+        " keyboard-configuration/variant=USA<wait>",
+        " locale=en_US<wait>",
+        " netcfg/get_hostname=ubuntu-1404<wait>",
+        " netcfg/get_domain=vagrantup.com<wait>",
+        " noapic<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+        " -- <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "disk_size": 40960,
+      "headless": false,
+      "guest_os_type": "ubuntu-64",
+      "tools_upload_flavor": "linux",
+      "http_directory": "http",
+      "iso_checksum": "01545fa976c8367b4f0d59169ac4866c",
+      "iso_checksum_type": "md5",
+      "iso_urls": [
+          "{{user `iso_folder`}}/ubuntu-14.04-server-amd64.iso"
+        ],
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "echo 'shutdown -P now' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'",
+      "vmx_data_post": {
+        "ethernet0.present": "true",
+        "ethernet0.networkName": "VM Network",
+        "ethernet0.virtualDev": "vmxnet3"
+      }
+    }
+  ]
+}
