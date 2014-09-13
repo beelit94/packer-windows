@@ -7,7 +7,8 @@
     "vsphere_cluster": "{{env `VSPHERE_CLUSTER`}}",
     "vsphere_datacenter": "{{env `VSPHERE_DATACENTER`}}",
     "vsphere_resource_pool": "{{env `VSPHERE_RESOURCE_POOL`}}",
-    "vsphere_datastore": "{{env `VSPHERE_DATASTORE`}}"
+    "vsphere_datastore": "{{env `VSPHERE_DATASTORE`}}",
+    "vm_name": "ubuntu_1404"
   },
   "post-processors": [
     {
@@ -18,10 +19,15 @@
       "username": "{{user `vsphere_username`}}",
       "password": "{{user `vsphere_password`}}",
       "resource_pool": "template",
-      "vm_name": "ftan-testing-ubuntu",
+      "vm_name": "{{user `vm_name`}}_packer_template",
       "datastore": "QA-esx-datastore",
       "insecure": true,
       "keep_input_artifact": true
+    },
+    {
+      "type": "vagrant",
+      "keep_input_artifact": true,
+      "output": "{{user `vm_name`}}_{{.Provider}}.box"
     }
   ],
   "provisioners": [
@@ -124,7 +130,7 @@
       "boot_wait": "10s",
       "disk_size": 40960,
       "headless": true,
-      "guest_os_type": "linux",
+      "guest_os_type": "ubuntu-64",
       "tools_upload_flavor": "linux",
       "http_directory": "http",
       "iso_checksum": "ca2531b8cd79ea5b778ede3a524779b9",
