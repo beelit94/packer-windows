@@ -80,7 +80,7 @@
       "boot_wait": "10s",
       "disk_size": 40960,
       "headless": true,
-      "guest_os_type": "linux",
+      "guest_os_type": "Ubuntu_64",
       "http_directory": "http",
       "iso_checksum": "01545fa976c8367b4f0d59169ac4866c",
       "iso_checksum_type": "md5",
@@ -127,20 +127,20 @@
       "guest_os_type": "linux",
       "tools_upload_flavor": "linux",
       "http_directory": "http",
-      "iso_checksum": "01545fa976c8367b4f0d59169ac4866c",
+      "iso_checksum": "ca2531b8cd79ea5b778ede3a524779b9",
       "iso_checksum_type": "md5",
       "iso_urls": [
-          "{{user `iso_folder`}}/ubuntu-14.04-server-amd64.iso"
+          "{{user `iso_folder`}}/ubuntu-14.04.1-server-amd64.iso "
         ],
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "ssh_port": 22,
       "ssh_wait_timeout": "10000s",
       "shutdown_command": "echo 'shutdown -P now' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'",
-      "vmx_data_post": {
-        "ethernet0.present": "true",
-        "ethernet0.networkName": "VM Network",
-        "ethernet0.virtualDev": "vmxnet3"
+      "vmx_data": {
+        "memsize": "512",
+        "numvcpus": "1",
+        "cpuid.coresPerSocket": "1"
       }
     }
   ]
