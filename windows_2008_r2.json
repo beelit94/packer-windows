@@ -89,8 +89,7 @@
       "scripts": [
         "./scripts/vm-guest-tools.bat",
         "./scripts/vagrant-ssh.bat",
-        "./scripts/enable-rdp.bat",
-        "./scripts/powershell30.bat"
+        "./scripts/enable-rdp.bat"
       ]
     },
     {
@@ -100,7 +99,6 @@
       "pause_before": "5m",
       "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
       "scripts": [
-        "./scripts/chocolatey.bat",
         "./scripts/salt.bat"
       ]
     }
