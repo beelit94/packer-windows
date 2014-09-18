@@ -12,7 +12,7 @@
     "vsphere_datacenter": "{{env `VSPHERE_DATACENTER`}}",
     "vsphere_resource_pool": "{{env `VSPHERE_RESOURCE_POOL`}}",
     "vsphere_datastore": "{{env `VSPHERE_DATASTORE`}}",
-    "vm_name": "windows_2008"
+    "vm_name": "windows_2008_r2"
   },
   "builders": [
     {
