@@ -4,7 +4,15 @@
     "iso_checksum": "8503997171f731d9bd1cb0b0edc31f3d",
     "iso_checksum_type": "md5",
     "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
-    "headless": true
+    "headless": true,
+    "vsphere_host": "{{env `VSPHERE_HOST`}}",
+    "vsphere_username": "{{env `VSPHERE_USERNAME`}}",
+    "vsphere_password": "{{env `VSPHERE_PASSWORD`}}",
+    "vsphere_cluster": "{{env `VSPHERE_CLUSTER`}}",
+    "vsphere_datacenter": "{{env `VSPHERE_DATACENTER`}}",
+    "vsphere_resource_pool": "{{env `VSPHERE_RESOURCE_POOL`}}",
+    "vsphere_datastore": "{{env `VSPHERE_DATASTORE`}}",
+    "vm_name": "windows_2012"
   },
   "builders": [
     {
@@ -119,6 +127,19 @@
     }
   ],
   "post-processors": [
+    {
+      "type": "vsphere",
+      "cluster": "ESX4",
+      "datacenter": "QA_Sustaining",
+      "host": "{{user `vsphere_host`}}",
+      "username": "{{user `vsphere_username`}}",
+      "password": "{{user `vsphere_password`}}",
+      "resource_pool": "template",
+      "vm_name": "{{user `vm_name`}}_packer_template",
+      "datastore": "{{user `vsphere_datastore`}}",
+      "insecure": true,
+      "keep_input_artifact": false
+    },
     {
       "type": "vagrant",
       "keep_input_artifact": false,
