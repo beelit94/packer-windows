@@ -137,6 +137,7 @@
       "resource_pool": "template",
       "vm_name": "{{user `vm_name`}}_packer_template",
       "datastore": "{{user `vsphere_datastore`}}",
+      "disk_mode": "thin",
       "insecure": true,
       "keep_input_artifact": false
     },
