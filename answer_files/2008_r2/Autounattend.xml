@@ -231,15 +231,27 @@
                     <Order>22</Order>
                     <Description>Disable password expiration for vagrant user</Description>
                 </SynchronousCommand>
+
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>cmd.exe /c a:\dot-net-framework.bat</CommandLine>
+                    <Order>23</Order>
+                    <Description>install dot net framework</Description>
+                </SynchronousCommand>
+
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>cmd.exe /c a:\powershell40.bat</CommandLine>
+                    <Order>24</Order>
+                    <Description>install powershell</Description>
+                </SynchronousCommand>
                 <!-- WITHOUT WINDOWS UPDATES -->
-                <!--
+                
                 <SynchronousCommand wcm:action="add">
 					<CommandLine>cmd.exe /c C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\openssh.ps1 -AutoStart</CommandLine>
 					<Description>Install OpenSSH</Description>
 					<Order>99</Order>
 					<RequiresUserInput>true</RequiresUserInput>
 				</SynchronousCommand>
-                -->
+                
                 <!-- END WITHOUT WINDOWS UPDATES -->
                 <!-- WITH WINDOWS UPDATES -->
                 <SynchronousCommand wcm:action="add">

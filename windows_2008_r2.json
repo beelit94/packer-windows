@@ -2,6 +2,7 @@
   "variables": {
     "iso_folder": "{{env `ISO_FOLDER`}}",
     "iso_checksum": "4263be2cf3c59177c45085c0a7bc6ca5",
+    "iso_name": "en_windows_2008_r2_x64_sp1_trial.iso",
     "iso_checksum_type": "md5",
     "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
     "headless": true,
@@ -12,14 +13,18 @@
     "vsphere_datacenter": "{{env `VSPHERE_DATACENTER`}}",
     "vsphere_resource_pool": "{{env `VSPHERE_RESOURCE_POOL`}}",
     "vsphere_datastore": "{{env `VSPHERE_DATASTORE`}}",
-    "vm_name": "windows_2008_r2"
+    "vm_name": "windows_2008_r2",
+    "version": "{{env `VERSION`}}",
+    "cloud_token": "{{env `CLOUD_TOKEN`}}",
+    "box_download_prefix": "{{env `BOX_DOWNLOAD_PREFIX`}}",
+    "box_tag": "{{env `BOX_TAG`}}"
   },
   "builders": [
     {
       "type": "vmware-iso",
       "iso_urls": [
-        "{{user `iso_folder`}}/7601.17514.101119-1850_x64fre_server_eval_en-us-GRMSXEVAL_EN_DVD.iso",
-        "iso/7601.17514.101119-1850_x64fre_server_eval_en-us-GRMSXEVAL_EN_DVD.iso",
+        "{{user `iso_folder`}}/{{user `iso_name`}}",
+        "iso/{{user `iso_name`}}",
         "http://download.microsoft.com/download/7/5/E/75EC4E54-5B02-42D6-8879-D8D3A25FBEF7/7601.17514.101119-1850_x64fre_server_eval_en-us-GRMSXEVAL_EN_DVD.iso"
       ],
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
@@ -37,6 +42,8 @@
       "vnc_port_max": 5980,
       "floppy_files": [
         "./answer_files/2008_r2/Autounattend.xml",
+        "./scripts/dot-net-framework.bat",
+        "./scripts/powershell40.bat",
         "./scripts/microsoft-updates.bat",
         "./scripts/win-updates.ps1",
         "./scripts/openssh.ps1"
@@ -48,44 +55,6 @@
         "numvcpus": "2",
         "scsi0.virtualDev": "lsisas1068"
       }
-    },
-    {
-      "type": "virtualbox-iso",
-      "iso_urls": [
-        "{{user `iso_folder`}}/7601.17514.101119-1850_x64fre_server_eval_en-us-GRMSXEVAL_EN_DVD.iso",
-        "http://download.microsoft.com/download/7/5/E/75EC4E54-5B02-42D6-8879-D8D3A25FBEF7/7601.17514.101119-1850_x64fre_server_eval_en-us-GRMSXEVAL_EN_DVD.iso"
-      ],
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
-      "iso_checksum": "{{user `iso_checksum`}}",
-      "headless": "{{user `headless`}}",
-      "boot_wait": "2m",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
-      "ssh_wait_timeout": "5h",
-      "shutdown_command": "{{user `shutdown_command`}}",
-      "guest_os_type": "Windows2008_64",
-      "disk_size": 61440,
-      "floppy_files": [
-        "./answer_files/2008_r2/Autounattend.xml",
-        "./scripts/microsoft-updates.bat",
-        "./scripts/win-updates.ps1",
-        "./scripts/openssh.ps1",
-        "./scripts/oracle-cert.cer"
-      ],
-      "vboxmanage": [
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--memory",
-          "2048"
-        ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--cpus",
-          "2"
-        ]
-      ]
     }
   ],
   "provisioners": [
@@ -98,7 +67,7 @@
         "./scripts/vm-guest-tools.bat",
         "./scripts/vagrant-ssh.bat",
         "./scripts/enable-rdp.bat",
-        "./scripts/powershell40.bat"
+        "./scripts/reboot.bat"
       ]
     },
     {
@@ -109,30 +78,22 @@
       "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
       "scripts": [
         "./scripts/chocolatey.bat",
-        "./scripts/salt.bat"
+        "./scripts/chocopacks.bat"
       ]
     }
   ],
   "post-processors": [
-    {
-      "type": "vsphere",
-      "cluster": "ESX4",
-      "datacenter": "QA_Sustaining",
-      "host": "{{user `vsphere_host`}}",
-      "username": "{{user `vsphere_username`}}",
-      "password": "{{user `vsphere_password`}}",
-      "resource_pool": "template",
-      "vm_name": "{{user `vm_name`}}_packer_template",
-      "datastore": "{{user `vsphere_datastore`}}",
-      "disk_mode": "thin",
-      "insecure": true,
-      "keep_input_artifact": false
-    },
-    {
-      "type": "vagrant",
-      "keep_input_artifact": true,
-      "output": "windows_2008_r2_{{.Provider}}.box",
-      "vagrantfile_template": "vagrantfile-windows_2008_r2.template"
-    }
-  ]
+      [{
+          "type": "vagrant",
+          "vagrantfile_template": "vagrantfile-{{user `vm_name`}}.template",
+          "output": "{{user `vm_name`}}_{{.Provider}}.box"
+      },
+      {
+          "type": "vagrant-cloud",
+          "box_tag": "{{user `box_tag`}}",
+          "access_token": "{{user `cloud_token`}}",
+          "version": "{{user `version`}}",
+          "box_download_url": "{{user `box_download_prefix`}}{{user `vm_name`}}_{{.Provider}}.box"
+      }]
+    ]
 }
